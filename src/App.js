@@ -1,23 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
+import Condition from './Condition';
+import React, { useState } from 'react';
 
 function App() {
+  const [rootCondition, setRootCondition] = useState({
+    type: 'AND',
+    conditions: []
+  });
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>SQL WHERE Editor</h1>
+      <Condition condition={rootCondition} onChange={setRootCondition} />
+      <pre>{JSON.stringify(rootCondition, null, 2)}</pre>
     </div>
   );
 }
