@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Condition from './Condition';
 import React, { useState } from 'react';
