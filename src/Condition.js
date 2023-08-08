@@ -2,7 +2,7 @@ import React from 'react';
 
 const operators = ['=', '!=', '<', '>', '<=', '>='];
 
-const Condition = ({ condition, onChange, level = 0 }) => {
+const Condition = ({ condition, onChange, level = 0, onRemove = undefined }) => {
   const containerStyle = {
     border: '1px solid black',
     padding: '10px',
@@ -30,12 +30,18 @@ const Condition = ({ condition, onChange, level = 0 }) => {
           onChange={e => onChange({ ...condition, value: e.target.value })}
           placeholder="Value"
         />
+        <button onClick={onRemove}>
+          Remove
+        </button>
       </div>
     );
   } else if (condition.type === 'NOT') {
     return (
       <div style={containerStyle}>
         NOT
+        <button onClick={onRemove}>
+          Remove
+        </button>
         <Condition
           condition={condition.condition || { field: '', operator: '=', value: '' }}
           onChange={newCond => onChange({ ...condition, condition: newCond })}
@@ -64,6 +70,7 @@ const Condition = ({ condition, onChange, level = 0 }) => {
           <option value="AND">AND</option>
           <option value="OR">OR</option>
         </select>
+        {onRemove !== undefined && <button onClick={onRemove}>Remove</button>}
         <div>
           {condition.conditions.map((cond, index) => (
             <div key={index}>
@@ -75,14 +82,12 @@ const Condition = ({ condition, onChange, level = 0 }) => {
                   onChange({ ...condition, conditions: newConditions });
                 }}
                 level={level + 1}
+                onRemove={() => {
+                  const newConditions = [...condition.conditions];
+                  newConditions.splice(index, 1);
+                  onChange({ ...condition, conditions: newConditions });
+                }}
               />
-              <button onClick={() => {
-                const newConditions = [...condition.conditions];
-                newConditions.splice(index, 1);
-                onChange({ ...condition, conditions: newConditions });
-              }}>
-                Remove
-              </button>
             </div>
           ))}
           <button onClick={() => onChange({
