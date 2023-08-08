@@ -37,10 +37,20 @@ const Condition = ({ condition, onChange, level = 0 }) => {
       <div style={containerStyle}>
         NOT
         <Condition
-          condition={condition.condition}
+          condition={condition.condition || { field: '', operator: '=', value: '' }}
           onChange={newCond => onChange({ ...condition, condition: newCond })}
           level={level + 1}
         />
+        <button onClick={() => onChange({
+          ...condition, condition: { type: 'AND', conditions: [] }
+        })}>
+          Wrap AND Group
+        </button>
+        <button onClick={() => onChange({
+          ...condition, condition: { type: 'OR', conditions: [] }
+        })}>
+          Wrap OR Group
+        </button>
       </div>
     );
   } else {
